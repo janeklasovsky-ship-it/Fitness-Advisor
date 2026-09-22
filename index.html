@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🥗 Fitness Advisor</title>
+<style>
+  :root{
+    --bg1:#0f2027; --bg2:#2c5364; --card:#ffffff; --text:#1c2b33;
+    --accent:#22c55e; --accent2:#f59e0b; --danger:#ef4444; --muted:#6b7280;
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:linear-gradient(135deg,#a8edea,#fed6e3 40%,#fcefee 70%,#d9f0e8);
+    color:var(--text); padding:20px;
+  }
+  .wrap{max-width:960px;margin:0 auto}
+  header{text-align:center;margin-bottom:22px}
+  header h1{font-size:2rem;margin:0 0 4px}
+  header p{margin:0;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media (max-width:760px){.grid{grid-template-columns:1fr}}
+  .card{
+    background:var(--card);border-radius:var(--radius);padding:20px;
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
+    transition:transform .15s ease;
+  }
+  .card:hover{transform:translateY(-2px)}
+  .card h2{margin:0 0 14px;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+  label{display:block;font-size:.8rem;color:var(--muted);margin:10px 0 4px}
+  input,select{
+    width:100%;padding:9px 10px;border:1px solid #e2e8f0;border-radius:10px;
+    font-size:.95rem;background:#f8fafc;
+  }
+  input:focus,select:focus{outline:2px solid var(--accent);border-color:transparent}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  button{
+    cursor:pointer;border:none;border-radius:12px;padding:10px 16px;font-size:.95rem;
+    font-weight:600;transition:transform .1s ease,box-shadow .1s ease;
+  }
+  button:active{transform:scale(.96)}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(34,197,94,.35)}
+  .btn-ghost{background:#f1f5f9;color:var(--text)}
+  .btn-danger{background:#fee2e2;color:var(--danger)}
+  .full{grid-column:1/-1}
+  .goal-box{display:flex;justify-content:space-around;text-align:center;margin-top:4px}
+  .stat{display:flex;flex-direction:column}
+  .stat .num{font-size:1.5rem;font-weight:700}
+  .stat .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+  .suggestion{
+    margin-top:14px;padding:12px 14px;border-radius:12px;background:#ecfdf5;
+    border:1px dashed var(--accent);font-size:.9rem;
+  }
+  .log-form{display:flex;gap:8px;margin-bottom:12px}
+  .log-form input{flex:1}
+  .entry{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:8px 10px;border-radius:10px;background:#f8fafc;margin-bottom:6px;font-size:.88rem;
+  }
+  .entry .desc{flex:1;margin-right:8px;text-transform:capitalize}
+  .entry .kcal{font-weight:700;color:var(--accent2);white-space:nowrap;margin-right:8px}
+  .entry .kcal input{width:64px;padding:3px 6px;font-weight:700;color:var(--accent2);text-align:right}
+  .entry button{padding:3px 8px;font-size:.75rem;background:transparent;color:var(--danger)}
+  .empty{color:var(--muted);font-size:.85rem;text-align:center;padding:10px 0}
+  svg text{font-family:inherit}
+  .ad-slot{
+    margin-top:18px;padding:14px;border:2px dashed #cbd5e1;border-radius:14px;
+    text-align:center;color:var(--muted);font-size:.8rem;background:repeating-linear-gradient(45deg,#fafafa,#fafafa 10px,#f3f4f6 10px,#f3f4f6 20px);
+  }
+  footer{text-align:center;color:var(--muted);font-size:.75rem;margin-top:26px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🥗 Fitness Advisor</h1>
+    <p>Track meals, guess calories, and see what's left for today — playful &amp; local, no server involved.</p>
+  </header>
+
+  <div class="grid">
+    <!-- Profile -->
+    <div class="card">
+      <h2>🧍 Your profile</h2>
+      <div class="row2">
+        <div><label>Gender</label>
+          <select id="p-gender"><option value="male">Male</option><option value="female">Female</option></select>
+        </div>
+        <div><label>Age</label><input type="number" id="p-age" min="10" max="100"></div>
+      </div>
+      <div class="row2">
+        <div><label>Height (cm)</label><input type="number" id="p-height" min="120" max="230"></div>
+        <div><label>Weight (kg)</label><input type="number" id="p-weight" min="30" max="250"></div>
+      </div>
+      <label>Occupation / daily activity</label>
+      <select id="p-occupation">
+        <option value="1.2">Desk job (mostly sitting)</option>
+        <option value="1.375">Light activity (on your feet some)</option>
+        <option value="1.55">Active job (on your feet most of the day)</option>
+        <option value="1.725">Very active (physical labor)</option>
+      </select>
+      <label>Sport / exercise frequency (sessions per week)</label>
+      <select id="p-sport">
+        <option value="0">0 — none</option>
+        <option value="0.05">1–2 sessions</option>
+        <option value="0.1">3–4 sessions</option>
+        <option value="0.15">5+ sessions</option>
+      </select>
+      <button class="btn-primary full" style="margin-top:14px" id="save-profile">💾 Save profile</button>
+    </div>
+
+    <!-- Today's goal -->
+    <div class="card">
+      <h2>🎯 Today's calorie budget</h2>
+      <div class="goal-box">
+        <div class="stat"><span class="num" id="stat-goal">–</span><span class="lbl">Goal</span></div>
+        <div class="stat"><span class="num" id="stat-consumed">–</span><span class="lbl">Eaten</span></div>
+        <div class="stat"><span class="num" id="stat-remaining">–</span><span class="lbl">Remaining</span></div>
+      </div>
+      <div id="donut-holder" style="display:flex;justify-content:center;margin-top:10px"></div>
+      <div class="suggestion" id="suggestion">Save your profile to see a personalised budget.</div>
+    </div>
+
+    <!-- Log food -->
+    <div class="card full">
+      <h2>🍽️ Log food &amp; drink</h2>
+      <div class="log-form">
+        <input type="text" id="food-input" placeholder="e.g. 2 slices of pizza and a coke">
+        <button class="btn-primary" id="add-food">➕ Add &amp; guess</button>
+      </div>
+      <div id="entries"></div>
+      <div style="margin-top:10px;display:flex;justify-content:flex-end">
+        <button class="btn-ghost" id="reset-day">↺ Reset today</button>
+      </div>
+    </div>
+
+    <!-- History chart -->
+    <div class="card full">
+      <h2>📊 Last 7 days</h2>
+      <div id="bars-holder"></div>
+    </div>
+  </div>
+
+  <div class="ad-slot" id="ad-slot">Sponsored — your ad/commercial slot goes here 📣</div>
+  <footer>Estimates are rough guesses from a small built-in food list — not medical or nutritional advice.</footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const todayKey = () => new Date().toISOString().slice(0,10);
+
+// ---------- storage ----------
+// Falls back to an in-memory store when localStorage is unavailable
+// (private browsing, sandboxed previews, data: URLs all throw on access).
+const memoryStore = {};
+function storageGet(key){
+  try{ return localStorage.getItem(key); }
+  catch(e){ return memoryStore[key] ?? null; }
+}
+function storageSet(key, value){
+  try{ localStorage.setItem(key, value); }
+  catch(e){ memoryStore[key] = value; }
+}
+
+const DEFAULT_PROFILE = {gender:'male', age:50, height:190, weight:105, occupation:1.2, sport:0.05};
+function loadProfile(){
+  try{ return {...DEFAULT_PROFILE, ...JSON.parse(storageGet('fa_profile'))}; }
+  catch(e){ return {...DEFAULT_PROFILE}; }
+}
+function saveProfile(p){ storageSet('fa_profile', JSON.stringify(p)); }
+function loadDays(){
+  try{ return JSON.parse(storageGet('fa_days')) || {}; }
+  catch(e){ return {}; }
+}
+function saveDays(d){ storageSet('fa_days', JSON.stringify(d)); }
+
+// ---------- food guesser ----------
+const FOOD_DB = [
+  {kw:['grilled chicken','chicken breast'], kcal:250},
+  {kw:['fried chicken'], kcal:400},
+  {kw:['chicken'], kcal:250},
+  {kw:['burrito'], kcal:450},
+  {kw:['cheeseburger'], kcal:600},
+  {kw:['hamburger','burger'], kcal:550},
+  {kw:['pizza'], kcal:285},
+  {kw:['pasta','spaghetti'], kcal:350},
+  {kw:['fried rice'], kcal:330},
+  {kw:['rice'], kcal:200},
+  {kw:['salad'], kcal:150},
+  {kw:['soup'], kcal:170},
+  {kw:['steak'], kcal:420},
+  {kw:['salmon','fish'], kcal:230},
+  {kw:['sushi'], kcal:200},
+  {kw:['sandwich'], kcal:350},
+  {kw:['taco'], kcal:210},
+  {kw:['toast','bread'], kcal:80},
+  {kw:['bacon'], kcal:90},
+  {kw:['egg'], kcal:70},
+  {kw:['cheese'], kcal:110},
+  {kw:['yogurt','yoghurt'], kcal:120},
+  {kw:['oatmeal','porridge'], kcal:150},
+  {kw:['banana'], kcal:105},
+  {kw:['apple'], kcal:95},
+  {kw:['orange'], kcal:65},
+  {kw:['avocado'], kcal:240},
+  {kw:['nuts','almonds','peanuts'], kcal:170},
+  {kw:['fries','chips'], kcal:365},
+  {kw:['donut','doughnut'], kcal:250},
+  {kw:['cookie'], kcal:150},
+  {kw:['cake'], kcal:350},
+  {kw:['ice cream'], kcal:270},
+  {kw:['chocolate'], kcal:210},
+  {kw:['pretzel'], kcal:180},
+  {kw:['beer'], kcal:150},
+  {kw:['wine'], kcal:125},
+  {kw:['latte','cappuccino','coffee'], kcal:120},
+  {kw:['espresso'], kcal:5},
+  {kw:['soda','cola','coke'], kcal:150},
+  {kw:['juice'], kcal:110},
+  {kw:['milk'], kcal:100},
+  {kw:['water'], kcal:0},
+];
+function guessCalories(desc){
+  let text = ' ' + desc.toLowerCase() + ' ';
+  let total = 0, matched = false;
+  for(const item of FOOD_DB){
+    for(const kw of item.kw){
+      if(text.includes(kw)){
+        let qty = 1;
+        const re = new RegExp('(\\d+)\\s*(?:x\\s*)?(?:slices?|pieces?|cups?|glasses?)?\\s*(?:of\\s*)?' + kw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+        const m = text.match(re);
+        if(m) qty = parseInt(m[1]) || 1;
+        else if(/\bdouble\b/.test(text)) qty = 2;
+        total += item.kcal * qty;
+        matched = true;
+        text = text.replace(new RegExp(kw,'g'), ' ');
+        break;
+      }
+    }
+  }
+  if(!matched){
+    const words = desc.trim().split(/\s+/).length;
+    total = Math.max(120, Math.min(700, words * 60));
+  }
+  return Math.round(total);
+}
+
+// ---------- calorie goal ----------
+function computeGoal(p){
+  const bmr = p.gender === 'male'
+    ? 10*p.weight + 6.25*p.height - 5*p.age + 5
+    : 10*p.weight + 6.25*p.height - 5*p.age - 161;
+  const multiplier = parseFloat(p.occupation) + parseFloat(p.sport);
+  return Math.round(bmr * multiplier);
+}
+
+// ---------- rendering ----------
+function renderDonut(consumed, goal){
+  const pct = goal > 0 ? Math.min(1, consumed/goal) : 0;
+  const r = 54, c = 2*Math.PI*r;
+  const over = consumed > goal;
+  const color = over ? 'var(--danger)' : 'var(--accent)';
+  $('donut-holder').innerHTML = `
+  <svg width="150" height="150" viewBox="0 0 150 150">
+    <circle cx="75" cy="75" r="${r}" fill="none" stroke="#e5e7eb" stroke-width="14"/>
+    <circle cx="75" cy="75" r="${r}" fill="none" stroke="${color}" stroke-width="14"
+      stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}"
+      transform="rotate(-90 75 75)" style="transition:stroke-dashoffset .5s ease"/>
+    <text x="75" y="70" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)">${Math.round(pct*100)}%</text>
+    <text x="75" y="90" text-anchor="middle" font-size="11" fill="var(--muted)">of goal</text>
+  </svg>`;
+}
+function renderBars(days, goal){
+  const dates = [];
+  for(let i=6;i>=0;i--){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    dates.push(d.toISOString().slice(0,10));
+  }
+  const vals = dates.map(d => (days[d]?.entries||[]).reduce((s,e)=>s+e.kcal,0));
+  const max = Math.max(goal, ...vals, 1);
+  const w = 100, h = 130, gap = 14;
+  const barW = w;
+  let svg = `<svg viewBox="0 0 ${(w+gap)*7} 160" width="100%" height="170">`;
+  dates.forEach((d,i)=>{
+    const x = i*(w+gap);
+    const bh = Math.round((vals[i]/max)*h);
+    const over = vals[i] > goal;
+    svg += `<rect x="${x}" y="${h-bh+10}" width="${barW}" height="${bh}" rx="8" fill="${over?'var(--danger)':'var(--accent)'}"/>`;
+    svg += `<text x="${x+barW/2}" y="${h-bh+2}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--text)">${vals[i]||''}</text>`;
+    svg += `<text x="${x+barW/2}" y="150" text-anchor="middle" font-size="10" fill="var(--muted)">${d.slice(5)}</text>`;
+  });
+  svg += `<line x1="0" y1="${h-Math.round((goal/max)*h)+10}" x2="${(w+gap)*7-gap}" y2="${h-Math.round((goal/max)*h)+10}" stroke="var(--accent2)" stroke-dasharray="4,4" stroke-width="2"/>`;
+  svg += `</svg>`;
+  $('bars-holder').innerHTML = svg;
+}
+function suggestionText(remaining, goal){
+  if(goal <= 0) return 'Save your profile to see a personalised budget.';
+  const hour = new Date().getHours();
+  const dayLeft = hour < 18;
+  if(remaining <= 0) return "🎉 You've hit (or passed) your goal for today — maybe keep the rest light and stay hydrated!";
+  if(remaining < 200) return `Only ~${remaining} kcal left — a small snack (fruit, yogurt) is about all that fits.`;
+  if(remaining < 500) return `~${remaining} kcal left — good for a light meal or a snack + small dinner.`;
+  if(!dayLeft) return `~${remaining} kcal left and evening's here — a solid dinner should fit comfortably.`;
+  return `~${remaining} kcal left for the rest of the day — plenty of room for a full meal or two.`;
+}
+
+function renderEntries(entries){
+  if(!entries.length){ $('entries').innerHTML = '<div class="empty">No food logged yet today 🍽️</div>'; return; }
+  $('entries').innerHTML = entries.map((e,i)=>`
+    <div class="entry">
+      <span class="desc">${e.desc}</span>
+      <span class="kcal"><input type="number" value="${e.kcal}" data-i="${i}" class="kcal-edit"> kcal</span>
+      <button data-i="${i}" class="del-entry">✕</button>
+    </div>`).join('');
+  document.querySelectorAll('.kcal-edit').forEach(inp=>{
+    inp.addEventListener('change', ()=>{
+      const days = loadDays(); const day = days[todayKey()];
+      day.entries[+inp.dataset.i].kcal = parseInt(inp.value)||0;
+      saveDays(days); refresh();
+    });
+  });
+  document.querySelectorAll('.del-entry').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const days = loadDays(); const day = days[todayKey()];
+      day.entries.splice(+btn.dataset.i,1);
+      saveDays(days); refresh();
+    });
+  });
+}
+
+function refresh(){
+  const p = loadProfile();
+  const goal = computeGoal(p);
+  const days = loadDays();
+  const today = days[todayKey()] || {entries:[]};
+  const consumed = today.entries.reduce((s,e)=>s+e.kcal,0);
+  const remaining = goal - consumed;
+
+  $('stat-goal').textContent = goal;
+  $('stat-consumed').textContent = consumed;
+  $('stat-remaining').textContent = remaining;
+  $('suggestion').textContent = suggestionText(remaining, goal);
+  renderDonut(consumed, goal);
+  renderBars(days, goal);
+  renderEntries(today.entries);
+}
+
+function fillProfileForm(p){
+  $('p-gender').value = p.gender;
+  $('p-age').value = p.age;
+  $('p-height').value = p.height;
+  $('p-weight').value = p.weight;
+  $('p-occupation').value = p.occupation;
+  $('p-sport').value = p.sport;
+}
+
+// ---------- events ----------
+$('save-profile').addEventListener('click', ()=>{
+  const p = {
+    gender: $('p-gender').value,
+    age: parseInt($('p-age').value)||DEFAULT_PROFILE.age,
+    height: parseInt($('p-height').value)||DEFAULT_PROFILE.height,
+    weight: parseInt($('p-weight').value)||DEFAULT_PROFILE.weight,
+    occupation: $('p-occupation').value,
+    sport: $('p-sport').value,
+  };
+  saveProfile(p);
+  refresh();
+});
+$('add-food').addEventListener('click', ()=>{
+  const desc = $('food-input').value.trim();
+  if(!desc) return;
+  const kcal = guessCalories(desc);
+  const days = loadDays();
+  const key = todayKey();
+  if(!days[key]) days[key] = {entries:[]};
+  days[key].entries.push({desc, kcal, time: Date.now()});
+  saveDays(days);
+  $('food-input').value = '';
+  refresh();
+});
+$('food-input').addEventListener('keydown', e=>{ if(e.key==='Enter') $('add-food').click(); });
+$('reset-day').addEventListener('click', ()=>{
+  const days = loadDays();
+  days[todayKey()] = {entries:[]};
+  saveDays(days);
+  refresh();
+});
+
+// ---------- init ----------
+fillProfileForm(loadProfile());
+refresh();
+</script>
+</body>
+</html>
