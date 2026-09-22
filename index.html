@@ -6,102 +6,105 @@
 <title>Fitness Advisor</title>
 <style>
   :root{
-    --bg:#0A0D14; --bg2:#0E1220;
-    --surface:rgba(255,255,255,.045); --surface-2:rgba(255,255,255,.075);
-    --border:rgba(255,255,255,.09); --border-soft:rgba(255,255,255,.05);
-    --text:#F3F5FA; --dim:rgba(243,245,250,.62); --dimmer:rgba(243,245,250,.38);
-    --violet:#8B5CF6; --pink:#EC4899; --orange:#FB923C; --cyan:#22D3EE;
-    --green:#34D399; --red:#FB7185;
-    --grad: linear-gradient(120deg, var(--violet), var(--pink) 55%, var(--orange));
-    --radius:22px;
+    --bg:#0D0221; --pink:#FF2E9E; --purple:#B026FF; --cyan:#00F0FF; --gold:#FFD400; --orange:#FF6B35;
+    --text:#FDF1FF; --dim:rgba(253,241,255,.68); --dimmer:rgba(253,241,255,.42);
+    --grad: linear-gradient(90deg, var(--pink), var(--purple) 50%, var(--cyan));
+    --radius:18px;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
-    margin:0;font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,sans-serif;
-    color:var(--text);background:var(--bg);
-    padding:32px 18px 70px;position:relative;overflow-x:hidden;
+    margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    color:var(--text);background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(255,46,158,.35), transparent 60%),
+      linear-gradient(180deg,#1a0538 0%, #0D0221 45%, #05010f 100%);
+    padding:32px 18px 90px;position:relative;overflow-x:hidden;min-height:100vh;
   }
-  body::before,body::after{
-    content:"";position:fixed;width:520px;height:520px;border-radius:50%;
-    filter:blur(120px);opacity:.28;z-index:0;pointer-events:none;
+  /* synthwave grid floor */
+  body::after{
+    content:"";position:fixed;left:0;right:0;bottom:0;height:46vh;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,46,158,.55) 1.5px, transparent 1.5px),
+      linear-gradient(90deg, rgba(0,240,255,.4) 1.5px, transparent 1.5px);
+    background-size:56px 46px;
+    transform:perspective(300px) rotateX(58deg) scale(2.2);
+    transform-origin:bottom;
+    -webkit-mask-image:linear-gradient(to top, black 10%, transparent 92%);
+    mask-image:linear-gradient(to top, black 10%, transparent 92%);
+    opacity:.6;
   }
-  body::before{background:var(--violet);top:-180px;left:-160px}
-  body::after{background:var(--cyan);bottom:-200px;right:-160px;opacity:.18}
-
   .wrap{max-width:980px;margin:0 auto;position:relative;z-index:1}
 
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
   .card, header{animation:fadeUp .55s cubic-bezier(.2,.7,.3,1) both}
-  .grid > *:nth-child(2){animation-delay:.06s}
-  .full{animation-delay:.1s}
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  @keyframes glowpulse{0%,100%{filter:drop-shadow(0 0 6px var(--pink)) drop-shadow(0 0 14px var(--cyan))}50%{filter:drop-shadow(0 0 14px var(--purple)) drop-shadow(0 0 24px var(--pink))}}
 
   /* ---- header ---- */
-  header{
-    display:flex;align-items:center;gap:18px;margin-bottom:34px;flex-wrap:wrap;
-  }
+  header{display:flex;align-items:center;gap:18px;margin-bottom:36px;flex-wrap:wrap}
   .avatar{
-    width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    font-size:1.6rem;background:var(--grad);flex-shrink:0;
-    box-shadow:0 0 0 3px var(--bg), 0 0 0 4.5px rgba(139,92,246,.35), 0 8px 24px rgba(139,92,246,.25);
-    transition:transform .4s ease;
+    width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:1.9rem;background:radial-gradient(circle at 35% 30%, #fff, #cfd8ff 25%, #7f8fce 55%, #333 100%);
+    flex-shrink:0;animation:spin 6s linear infinite, glowpulse 3s ease-in-out infinite;
   }
   header h1{
-    margin:0;font-size:1.85rem;font-weight:800;letter-spacing:-.02em;
+    margin:0;font-size:2.1rem;font-weight:900;letter-spacing:.03em;text-transform:uppercase;
     background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 30px rgba(255,46,158,.35);
   }
-  header p{margin:4px 0 0;color:var(--dim);font-size:.92rem}
+  header p{margin:6px 0 0;color:var(--dim);font-size:.9rem;letter-spacing:.02em}
 
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
   @media (max-width:760px){.grid{grid-template-columns:1fr}}
   .full{grid-column:1/-1}
 
-  /* ---- glass cards ---- */
+  /* ---- neon cards ---- */
   .card{
-    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-    padding:22px 24px;transition:border-color .2s ease, transform .2s ease, background .2s ease;
+    background:linear-gradient(160deg, rgba(40,10,70,.55), rgba(15,5,35,.6));
+    border:1.5px solid rgba(255,46,158,.35);border-radius:var(--radius);
+    box-shadow:0 0 0 1px rgba(0,240,255,.08), 0 0 24px rgba(176,38,255,.18), inset 0 0 30px rgba(255,46,158,.05);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    padding:22px 24px;transition:box-shadow .25s ease, border-color .25s ease, transform .2s ease;
   }
-  .card:hover{border-color:rgba(255,255,255,.16);background:var(--surface-2)}
+  .card:hover{border-color:rgba(0,240,255,.55);box-shadow:0 0 0 1px rgba(0,240,255,.2), 0 0 36px rgba(0,240,255,.3);transform:translateY(-2px)}
   .card h2{
-    margin:0 0 18px;font-size:.95rem;font-weight:700;letter-spacing:.01em;
+    margin:0 0 18px;font-size:.85rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
     display:flex;align-items:center;gap:9px;color:var(--text)
   }
-  .card h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--grad);flex-shrink:0}
+  .card h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan),0 0 16px var(--cyan);flex-shrink:0}
 
-  label{display:block;font-size:.72rem;font-weight:600;color:var(--dimmer);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.06em}
+  label{display:block;font-size:.7rem;font-weight:700;color:var(--dimmer);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.08em}
   input,select{
-    width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:12px;
-    font-size:.92rem;background:rgba(255,255,255,.03);color:var(--text);font-family:inherit;
-    transition:border-color .15s ease, background .15s ease;
+    width:100%;padding:11px 12px;border:1.5px solid rgba(255,46,158,.3);border-radius:10px;
+    font-size:.92rem;background:rgba(0,0,0,.35);color:var(--text);font-family:inherit;
+    transition:border-color .15s ease, box-shadow .15s ease;
   }
   input::placeholder{color:var(--dimmer)}
-  input:focus,select:focus{outline:none;border-color:var(--violet);background:rgba(139,92,246,.08)}
-  select{accent-color:var(--violet)}
-  select option{background:#161B28;color:var(--text)}
+  input:focus,select:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,240,255,.18)}
+  select option{background:#1a0538;color:var(--text)}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
   /* ---- buttons ---- */
   button{
-    cursor:pointer;font-family:inherit;border:none;border-radius:12px;
-    padding:11px 18px;font-size:.88rem;font-weight:700;color:#fff;
-    transition:transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+    cursor:pointer;font-family:inherit;border:none;border-radius:10px;
+    padding:11px 18px;font-size:.85rem;font-weight:800;color:#150a2b;letter-spacing:.05em;text-transform:uppercase;
+    transition:transform .12s ease, box-shadow .12s ease, filter .12s ease;
   }
   button:active{transform:scale(.97)}
-  .btn-primary{background:var(--grad);box-shadow:0 6px 20px rgba(236,72,153,.28)}
-  .btn-primary:hover{box-shadow:0 8px 26px rgba(236,72,153,.4)}
-  .btn-ghost{background:var(--surface-2);color:var(--dim);border:1px solid var(--border)}
-  .btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.2)}
+  .btn-primary{background:var(--grad);box-shadow:0 0 18px rgba(255,46,158,.5), 0 0 36px rgba(0,240,255,.25);color:#0D0221}
+  .btn-primary:hover{filter:brightness(1.15)}
+  .btn-ghost{background:transparent;color:var(--dim);border:1.5px solid rgba(253,241,255,.25)}
+  .btn-ghost:hover{border-color:var(--cyan);color:var(--text)}
   .btn-full{width:100%;margin-top:18px}
 
   .goal-box{display:flex;justify-content:space-around;text-align:center}
-  .stat .num{font-size:1.7rem;font-weight:800;letter-spacing:-.02em}
-  .stat .lbl{font-size:.68rem;font-weight:600;color:var(--dimmer);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+  .stat .num{font-size:1.7rem;font-weight:900;text-shadow:0 0 12px rgba(0,240,255,.4)}
+  .stat .lbl{font-size:.66rem;font-weight:700;color:var(--dimmer);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
 
   .suggestion{
-    margin-top:16px;padding:13px 15px;border-radius:14px;
-    background:linear-gradient(120deg, rgba(139,92,246,.12), rgba(236,72,153,.1));
-    border:1px solid rgba(236,72,153,.2);font-size:.86rem;color:var(--text);line-height:1.4;
+    margin-top:16px;padding:13px 15px;border-radius:12px;
+    background:linear-gradient(120deg, rgba(255,46,158,.14), rgba(0,240,255,.1));
+    border:1.5px solid rgba(255,212,0,.35);font-size:.86rem;color:var(--text);line-height:1.4;
   }
 
   .log-form{display:flex;gap:9px;margin-bottom:14px;flex-wrap:wrap}
@@ -109,40 +112,41 @@
 
   .entry{
     display:flex;justify-content:space-between;align-items:center;gap:10px;
-    padding:11px 13px;border-radius:13px;border:1px solid var(--border-soft);
-    background:rgba(255,255,255,.025);margin-bottom:8px;font-size:.87rem;
-    transition:background .15s ease;
+    padding:11px 13px;border-radius:12px;border:1px solid rgba(255,46,158,.2);
+    background:rgba(0,0,0,.25);margin-bottom:8px;font-size:.87rem;
+    transition:border-color .15s ease;
   }
-  .entry:hover{background:rgba(255,255,255,.05)}
+  .entry:hover{border-color:rgba(0,240,255,.4)}
   .entry .desc{flex:1;text-transform:capitalize;color:var(--text)}
-  .entry .kcal{display:flex;align-items:center;gap:6px;font-weight:700;color:var(--orange);white-space:nowrap}
-  .entry .kcal input{width:64px;padding:5px 7px;font-weight:700;color:var(--orange);text-align:right;font-size:.85rem}
+  .entry .kcal{display:flex;align-items:center;gap:6px;font-weight:800;color:var(--gold);white-space:nowrap}
+  .entry .kcal input{width:64px;padding:5px 7px;font-weight:800;color:var(--gold);text-align:right;font-size:.85rem;text-transform:none}
   .entry .del-entry{
-    padding:5px 10px;font-size:.72rem;background:rgba(251,113,133,.14);color:var(--red);
-    border:1px solid rgba(251,113,133,.25);box-shadow:none;
+    padding:5px 10px;font-size:.68rem;background:rgba(255,46,158,.15);color:var(--pink);
+    border:1px solid rgba(255,46,158,.4);
   }
-  .entry .del-entry:hover{background:rgba(251,113,133,.22)}
+  .entry .del-entry:hover{background:rgba(255,46,158,.28)}
   .empty{color:var(--dimmer);font-size:.85rem;text-align:center;padding:18px 0}
 
   svg text{font-family:inherit}
 
   .ad-slot{
-    margin-top:24px;padding:14px 18px;border-radius:16px;border:1px dashed var(--border);
-    text-align:center;color:var(--dimmer);font-size:.78rem;font-weight:500;
+    margin-top:24px;padding:14px 18px;border-radius:14px;border:1.5px dashed rgba(255,212,0,.4);
+    text-align:center;color:var(--gold);font-size:.76rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    text-shadow:0 0 10px rgba(255,212,0,.4);
   }
   footer{text-align:center;color:var(--dimmer);font-size:.74rem;margin-top:28px}
 
   ::-webkit-scrollbar{width:10px}
-  ::-webkit-scrollbar-thumb{background:var(--surface-2);border-radius:8px}
+  ::-webkit-scrollbar-thumb{background:rgba(255,46,158,.3);border-radius:8px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="avatar" id="mascot">🙂</div>
+    <div class="avatar">🪩</div>
     <div>
       <h1>Fitness Advisor</h1>
-      <p>Track meals, estimate calories, and see what's left today — fully local, no server.</p>
+      <p>Track meals, estimate calories, see what's left today — boogie-local, no server.</p>
     </div>
   </header>
 
@@ -209,7 +213,7 @@
     </div>
   </div>
 
-  <div class="ad-slot" id="ad-slot">Sponsored — your ad/commercial slot goes here</div>
+  <div class="ad-slot" id="ad-slot">✦ Sponsored — your ad/commercial slot goes here ✦</div>
   <footer>Estimates are rough guesses from a small built-in food list — not medical or nutritional advice.</footer>
 </div>
 
@@ -331,17 +335,18 @@ function renderDonut(consumed, goal){
   <svg width="150" height="150" viewBox="0 0 150 150">
     <defs>
       <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="${over?'#FB7185':'#8B5CF6'}"/>
-        <stop offset="55%" stop-color="${over?'#F87171':'#EC4899'}"/>
-        <stop offset="100%" stop-color="${over?'#FB923C':'#FB923C'}"/>
+        <stop offset="0%" stop-color="${over?'#FF2E9E':'#FF2E9E'}"/>
+        <stop offset="55%" stop-color="${over?'#FF6B35':'#B026FF'}"/>
+        <stop offset="100%" stop-color="${over?'#FFD400':'#00F0FF'}"/>
       </linearGradient>
+      <filter id="ringGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     </defs>
-    <circle cx="75" cy="75" r="${r}" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="12"/>
-    <circle cx="75" cy="75" r="${r}" fill="none" stroke="url(#ringGrad)" stroke-width="12"
+    <circle cx="75" cy="75" r="${r}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="12"/>
+    <circle cx="75" cy="75" r="${r}" fill="none" stroke="url(#ringGrad)" stroke-width="12" filter="url(#ringGlow)"
       stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}"
       transform="rotate(-90 75 75)" style="transition:stroke-dashoffset .6s cubic-bezier(.2,.7,.3,1)"/>
-    <text x="75" y="70" text-anchor="middle" font-size="22" font-weight="800" fill="#F3F5FA">${Math.round(pct*100)}%</text>
-    <text x="75" y="90" text-anchor="middle" font-size="11" fill="rgba(243,245,250,.5)">of goal</text>
+    <text x="75" y="70" text-anchor="middle" font-size="22" font-weight="900" fill="#FDF1FF">${Math.round(pct*100)}%</text>
+    <text x="75" y="90" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing=".05em" fill="rgba(253,241,255,.5)">OF GOAL</text>
   </svg>`;
 }
 function renderBars(days, goal){
@@ -357,26 +362,27 @@ function renderBars(days, goal){
   let svg = `<svg viewBox="0 0 ${(w+gap)*7} 168" width="100%" height="175">
     <defs>
       <linearGradient id="barGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stop-color="#8B5CF6"/>
-        <stop offset="100%" stop-color="#EC4899"/>
+        <stop offset="0%" stop-color="#B026FF"/>
+        <stop offset="100%" stop-color="#FF2E9E"/>
       </linearGradient>
       <linearGradient id="barGradToday" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stop-color="#22D3EE"/>
-        <stop offset="100%" stop-color="#8B5CF6"/>
+        <stop offset="0%" stop-color="#00F0FF"/>
+        <stop offset="100%" stop-color="#B026FF"/>
       </linearGradient>
+      <filter id="barGlow"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     </defs>`;
   dates.forEach((d,i)=>{
     const x = i*(w+gap);
     const bh = Math.max(vals[i] > 0 ? 5 : 0, Math.round((vals[i]/max)*h));
     const over = vals[i] > goal;
     const isToday = i === 6;
-    const fill = over ? '#FB7185' : (isToday ? 'url(#barGradToday)' : 'url(#barGrad)');
+    const fill = over ? '#FF6B35' : (isToday ? 'url(#barGradToday)' : 'url(#barGrad)');
     const op = vals[i] > 0 ? 1 : .18;
-    svg += `<rect x="${x}" y="${h-bh+14}" width="${barW}" height="${Math.max(bh,3)}" rx="10" fill="${fill}" opacity="${vals[i]>0?op:.1}"/>`;
-    svg += `<text x="${x+barW/2}" y="${h-bh+6}" text-anchor="middle" font-size="12" font-weight="700" fill="#F3F5FA" opacity="${vals[i]>0?1:0}">${vals[i]||''}</text>`;
-    svg += `<text x="${x+barW/2}" y="${h+30}" text-anchor="middle" font-size="10.5" font-weight="600" fill="rgba(243,245,250,${isToday?.85:.42})">${d.slice(5)}</text>`;
+    svg += `<rect x="${x}" y="${h-bh+14}" width="${barW}" height="${Math.max(bh,3)}" rx="8" fill="${fill}" filter="url(#barGlow)" opacity="${vals[i]>0?op:.12}"/>`;
+    svg += `<text x="${x+barW/2}" y="${h-bh+6}" text-anchor="middle" font-size="12" font-weight="800" fill="#FDF1FF" opacity="${vals[i]>0?1:0}">${vals[i]||''}</text>`;
+    svg += `<text x="${x+barW/2}" y="${h+30}" text-anchor="middle" font-size="10.5" font-weight="700" fill="rgba(253,241,255,${isToday?.85:.4})">${d.slice(5)}</text>`;
   });
-  svg += `<line x1="0" y1="${h-Math.round((goal/max)*h)+14}" x2="${(w+gap)*7-gap}" y2="${h-Math.round((goal/max)*h)+14}" stroke="rgba(255,255,255,.25)" stroke-dasharray="4,5" stroke-width="1.5"/>`;
+  svg += `<line x1="0" y1="${h-Math.round((goal/max)*h)+14}" x2="${(w+gap)*7-gap}" y2="${h-Math.round((goal/max)*h)+14}" stroke="rgba(255,212,0,.55)" stroke-dasharray="4,5" stroke-width="1.5"/>`;
   svg += `</svg>`;
   $('bars-holder').innerHTML = svg;
 }
@@ -389,12 +395,6 @@ function suggestionText(remaining, goal){
   if(remaining < 500) return `~${remaining} kcal left — good for a light meal or a snack + small dinner.`;
   if(!dayLeft) return `~${remaining} kcal left and evening's here — a solid dinner should fit comfortably.`;
   return `~${remaining} kcal left for the rest of the day — plenty of room for a full meal or two.`;
-}
-function mascotFor(pct){
-  if(pct >= 1) return '🥴';
-  if(pct >= .85) return '😅';
-  if(pct >= .4) return '🙂';
-  return '😌';
 }
 
 function renderEntries(entries){
@@ -428,13 +428,11 @@ function refresh(){
   const today = days[todayKey()] || {entries:[]};
   const consumed = today.entries.reduce((s,e)=>s+e.kcal,0);
   const remaining = goal - consumed;
-  const pct = goal > 0 ? consumed/goal : 0;
 
   $('stat-goal').textContent = goal;
   $('stat-consumed').textContent = consumed;
   $('stat-remaining').textContent = remaining;
   $('suggestion').textContent = suggestionText(remaining, goal);
-  $('mascot').textContent = mascotFor(pct);
   renderDonut(consumed, goal);
   renderBars(days, goal);
   renderEntries(today.entries);
